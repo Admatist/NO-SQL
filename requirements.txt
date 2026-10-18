@@ -1,0 +1,6 @@
+cassandra-driver==3.30.1
+python-dotenv==1.2.4
+deprecation==3.0.0
+geomet==1.1.0
+click==8.5.0
+wrapt==2.5.1
