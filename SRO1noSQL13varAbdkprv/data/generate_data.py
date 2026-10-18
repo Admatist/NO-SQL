@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from src.queries import GPSHarness
+from SRO1noSQL13varAbdkprv.src.queries import GPSHarness
 
 def seed_data():
     db = GPSHarness()

@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime, timezone
-from src.queries import GPSHarness
+from SRO1noSQL13varAbdkprv.src.queries import GPSHarness
 
 class TestGPSTracking(unittest.TestCase):
     @classmethod
