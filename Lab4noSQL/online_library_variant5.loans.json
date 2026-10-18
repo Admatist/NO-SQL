@@ -1,0 +1,27 @@
+[{
+  "_id": {
+    "$oid": "6ab0f6c19d55b123d2a1076f"
+  },
+  "loanId": "L1",
+  "title": "1984",
+  "reader": "Иванов",
+  "status": "returned"
+},
+{
+  "_id": {
+    "$oid": "6ab0f6c19d55b123d2a10770"
+  },
+  "loanId": "L2",
+  "title": "Война и мир",
+  "reader": "Петров",
+  "status": "active"
+},
+{
+  "_id": {
+    "$oid": "6ab0f6c19d55b123d2a10771"
+  },
+  "loanId": "L3",
+  "title": "Сияние",
+  "reader": "Сидоров",
+  "status": "active"
+}]
