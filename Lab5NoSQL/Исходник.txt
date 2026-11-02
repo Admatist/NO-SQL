@@ -1,0 +1,45 @@
+# ВАРИАНТ 6: СИСТЕМА БРОНИРОВАНИЯ
+
+# 1. Создание нескольких бронирований (тип Hash) и установка TTL
+HSET booking:b777 user_id "402" resource "meeting_room_A" date "2026-10-06" status "confirmed"
+EXPIRE booking:b777 3600
+
+HSET booking:b778 user_id "405" resource "meeting_room_B" date "2026-10-07" status "pending"
+EXPIRE booking:b778 3600
+
+# 2. Кэширование ресурсов в формате JSON (тип String) и установка TTL
+SET cache:resource:meeting_room_A "{\"capacity\":10,\"projector\":true,\"status\":\"available\"}"
+EXPIRE cache:resource:meeting_room_A 600
+
+SET cache:resource:meeting_room_B "{\"capacity\":6,\"projector\":false,\"status\":\"maintenance\"}"
+EXPIRE cache:resource:meeting_room_B 600
+
+# 3. Использование атомарного счетчика для подсчета общего числа броней
+INCR stats:total_bookings
+INCR stats:total_bookings
+
+# 4. Добавление записей в историю бронирований пользователя (тип List)
+LPUSH user:402:bookings "booking:b777"
+LPUSH user:402:bookings "booking:b750"
+
+# 5. Использование множества (тип Set) для хранения уникальных тегов оборудования комнаты
+SADD room:meeting_room_A:features "projector" "whiteboard" "smart_tv"
+
+# 6. Использование сортированного множества (тип Sorted Set) для очереди броней по времени (timestamp)
+ZADD room:schedule:timeline 1759740000 "booking:b777"
+ZADD room:schedule:timeline 1759826400 "booking:b778"
+
+# --- БЛОК ПРОВЕРКИ И ЧТЕНИЯ ДАННЫХ ---
+HGETALL booking:b777
+HGETALL booking:b778
+GET cache:resource:meeting_room_A
+GET stats:total_bookings
+LRANGE user:402:bookings 0 -1
+SMEMBERS room:meeting_room_A:features
+ZRANGE room:schedule:timeline 0 -1 WITHSCORES
+TTL booking:b777
+
+# --- ИНВАЛИДАЦИЯ КЭША ---
+# Имитируем изменение статуса комнаты в БД и удаляем устаревший кэш
+DEL cache:resource:meeting_room_A
+EXISTS cache:resource:meeting_room_A
